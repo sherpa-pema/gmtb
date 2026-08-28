@@ -202,7 +202,7 @@ export default function Tours() {
     };
   }, [activeTourIndex]);
 
-  // Keyboard navigation for lightbox popup
+  // Keyboard navigation for lightbox
   useEffect(() => {
     if (activeTourIndex === null) return;
 
@@ -217,120 +217,113 @@ export default function Tours() {
   }, [activeTourIndex, closeLightbox, nextImage, prevImage]);
 
   return (
-    <section
-      id="tours"
-      className="bg-[#0F0F0F] text-[#FAF9F6] rounded-t-[28px] lg:rounded-t-[36px] -mt-6 relative z-10"
-    >
-      <div className="mx-auto max-w-[1360px] px-6 lg:px-8 pt-16 lg:pt-24 pb-16">
-        <div className="flex flex-wrap items-start justify-between gap-6">
+    <section id="tours" className="py-16 sm:py-24">
+      <div className="mx-auto max-w-[1240px] px-6 lg:px-8">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-zinc-200/70">
           <div>
-            <div className="font-label text-[11px] tracking-[0.24em] uppercase text-[#FF4D1C] mb-4">
+            <div className="font-mono text-[11px] tracking-[0.2em] uppercase text-zinc-400 font-medium mb-3">
               Signature Expeditions • 2025/26 Season
             </div>
-            <h2 className="font-display text-[52px] lg:text-[88px] leading-[0.85]">
-              CHOOSE YOUR
-              <br />
-              <span className="text-white/30">LINE</span>
+            <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-zinc-950 font-normal tracking-tight">
+              Choose Your <span className="italic text-zinc-400">Line</span>
             </h2>
           </div>
-          <div className="font-body text-[14px] leading-6 text-white/50 max-w-[380px] pt-2">
+          <div className="font-sans text-[14px] leading-relaxed text-zinc-500 max-w-[380px]">
             Four distinct ways to ride Nepal. All fully supported, all deeply
             local. From thin-air enduro to e-powered exploration.
           </div>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-2 gap-4 lg:gap-5">
+        {/* 2x2 Tours Grid */}
+        <div className="mt-10 grid md:grid-cols-2 gap-6 lg:gap-8">
           {TOURS.map((tour, tourIdx) => (
             <div
               key={tour.name}
-              className="group relative overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#151515] hover:bg-[#1A1A1A] transition-colors p-7 lg:p-9 flex flex-col min-h-[380px]"
+              className="group rounded-[24px] border border-zinc-200/80 bg-white p-7 sm:p-8 hover:border-zinc-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all flex flex-col justify-between"
             >
-              {/* Glow Blob */}
-              <div
-                className="absolute top-0 right-0 w-[320px] h-[320px] rounded-full blur-[80px] opacity-[0.12] pointer-events-none"
-                style={{ background: tour.accent }}
-              />
-
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="font-label text-[10px] tracking-[0.22em] uppercase text-white/40">
-                    {tour.sub}
+              <div>
+                {/* Top Title & Icon */}
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-zinc-400 font-medium">
+                      {tour.sub}
+                    </span>
+                    <h3 className="font-serif text-2xl sm:text-3xl text-zinc-950 font-normal tracking-tight mt-0.5">
+                      {tour.name}
+                    </h3>
                   </div>
-                  <h3 className="font-display text-[36px] lg:text-[42px] leading-[0.9] mt-1">
-                    {tour.name}
-                  </h3>
-                </div>
-                <div className="w-10 h-10 rounded-full border border-white/15 grid place-items-center group-hover:bg-white group-hover:text-black transition-colors">
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
-              </div>
-
-              <p className="font-body text-[14px] leading-6 text-white/60 mt-4 max-w-[360px]">
-                {tour.desc}
-              </p>
-
-              <div className="mt-6 space-y-2">
-                {tour.bullets.map((bullet) => (
-                  <div
-                    key={bullet}
-                    className="flex items-center gap-2 font-label text-[11px] tracking-wide text-white/70"
-                  >
-                    <span className="w-1 h-1 rounded-full bg-[#FF4D1C]" />{" "}
-                    {bullet}
+                  <div className="w-9 h-9 rounded-full border border-zinc-200 bg-zinc-50 grid place-items-center text-zinc-600 group-hover:bg-zinc-950 group-hover:text-white group-hover:border-zinc-950 transition-all shrink-0">
+                    <ArrowUpRight className="w-4 h-4" />
                   </div>
-                ))}
-              </div>
-
-              {/* 6-Thumbnail Gallery Grid */}
-              <div className="mt-6 pt-5 border-t border-white/[0.08]">
-                <div className="flex items-center justify-between mb-2.5">
-                  <span className="font-label text-[10px] tracking-[0.18em] uppercase text-white/40">
-                    Trail Gallery ({tour.gallery.length} photos)
-                  </span>
-                  <span className="font-label text-[9px] tracking-widest uppercase text-[#FF4D1C] flex items-center gap-1 opacity-80">
-                    <Eye className="w-3 h-3" /> Click to view
-                  </span>
                 </div>
 
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                  {tour.gallery.map((img, imgIdx) => (
-                    <button
-                      key={imgIdx}
-                      type="button"
-                      onClick={() => openLightbox(tourIdx, imgIdx)}
-                      className="group/thumb relative aspect-square overflow-hidden rounded-xl border border-white/15 bg-black/40 hover:border-[#FF4D1C] transition-all focus:outline-none focus:ring-2 focus:ring-[#FF4D1C]/50 cursor-pointer"
-                      title={img.title}
+                {/* Description */}
+                <p className="font-sans text-[14px] leading-relaxed text-zinc-600 mt-3.5">
+                  {tour.desc}
+                </p>
+
+                {/* Bullets */}
+                <div className="mt-5 space-y-2">
+                  {tour.bullets.map((bullet) => (
+                    <div
+                      key={bullet}
+                      className="flex items-center gap-2.5 font-sans text-[13px] text-zinc-700 font-medium"
                     >
-                      <img
-                        src={img.url}
-                        alt={img.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-115"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-black/30 group-hover/thumb:bg-black/0 transition-colors" />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/thumb:opacity-100 transition-opacity">
-                        <span className="w-6 h-6 rounded-full bg-[#FF4D1C] text-white grid place-items-center shadow-md">
-                          <Eye className="w-3 h-3" />
-                        </span>
-                      </div>
-                    </button>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF4D1C] shrink-0" />
+                      <span>{bullet}</span>
+                    </div>
                   ))}
                 </div>
+
+                {/* 6-Thumbnail Gallery */}
+                <div className="mt-6 pt-5 border-t border-zinc-100">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-mono text-[10px] tracking-wider uppercase text-zinc-400 font-medium">
+                      Trail Gallery ({tour.gallery.length} photos)
+                    </span>
+                    <span className="font-mono text-[9.5px] tracking-wider uppercase text-zinc-400 group-hover:text-[#FF4D1C] flex items-center gap-1 transition-colors">
+                      <Eye className="w-3 h-3" /> Click to view
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                    {tour.gallery.map((img, imgIdx) => (
+                      <button
+                        key={imgIdx}
+                        type="button"
+                        onClick={() => openLightbox(tourIdx, imgIdx)}
+                        className="group/thumb relative aspect-square overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-100 hover:border-zinc-900 transition-all cursor-pointer focus:outline-none"
+                        title={img.title}
+                      >
+                        <img
+                          src={img.url}
+                          alt={img.title}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-110"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-black/10 group-hover/thumb:bg-black/0 transition-colors" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-auto pt-8 flex items-center justify-between">
-                <span className="font-label text-[10px] tracking-[0.18em] uppercase text-white/30">
+              {/* Bottom Card Footer */}
+              <div className="mt-8 pt-5 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-4">
+                <span className="font-mono text-[10px] tracking-wider uppercase text-zinc-500 bg-zinc-50 border border-zinc-200/60 px-3 py-1 rounded-full">
                   {tour.meta}
                 </span>
                 <button
                   onClick={() => scrollTo("contact")}
-                  className="font-label text-[11px] tracking-widest uppercase text-white hover:text-[#FF4D1C] transition"
+                  className="font-sans text-[12px] font-semibold text-zinc-950 hover:text-[#FF4D1C] transition-colors flex items-center gap-1 group/btn"
                 >
-                  Request Details →
+                  Request Details
+                  <span className="group-hover/btn:translate-x-0.5 transition-transform">
+                    →
+                  </span>
                 </button>
               </div>
-
-              <div className="absolute bottom-0 left-7 right-7 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition" />
             </div>
           ))}
         </div>
@@ -344,45 +337,47 @@ export default function Tours() {
             id="lightbox-backdrop"
             className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-xl flex flex-col justify-between p-4 sm:p-6 lg:p-8 select-none"
             onClick={(e) => {
-              if (e.target === e.currentTarget || (e.target as HTMLElement).id === "lightbox-backdrop") {
+              if (
+                e.target === e.currentTarget ||
+                (e.target as HTMLElement).id === "lightbox-backdrop"
+              ) {
                 closeLightbox();
               }
             }}
           >
-            {/* Top Fixed Control Bar */}
+            {/* Top Bar */}
             <div
               className="mx-auto max-w-[1200px] w-full flex items-center justify-between gap-4 pb-4 border-b border-white/15"
               onClick={(e) => e.stopPropagation()}
             >
               <div>
-                <div className="font-label text-[10px] sm:text-[11px] tracking-[0.24em] uppercase text-[#FF4D1C] font-semibold">
+                <div className="font-mono text-[10.5px] tracking-[0.2em] uppercase text-[#FF4D1C] font-semibold">
                   {TOURS[activeTourIndex].sub} • {TOURS[activeTourIndex].name}
                 </div>
-                <h4 className="font-display text-[20px] sm:text-[28px] text-white leading-none mt-1">
+                <h4 className="font-serif text-[20px] sm:text-[26px] text-white leading-tight mt-0.5">
                   {TOURS[activeTourIndex].gallery[activeImageIndex].title}
                 </h4>
               </div>
 
-              {/* Action Controls & Close Button */}
-              <div className="flex items-center gap-3 sm:gap-4">
-                <span className="font-label text-[11px] sm:text-[12px] tracking-widest text-white/60 font-medium">
+              {/* Close & Counter */}
+              <div className="flex items-center gap-4">
+                <span className="font-mono text-[11px] sm:text-[12px] tracking-widest text-white/50 font-medium">
                   0{activeImageIndex + 1} / 0{TOURS[activeTourIndex].gallery.length}
                 </span>
 
-                {/* Highly Visible Close Button */}
                 <button
                   type="button"
                   onClick={closeLightbox}
-                  className="cursor-pointer bg-[#FF4D1C] hover:bg-white text-white hover:text-black font-label text-[11px] sm:text-[12px] font-bold tracking-widest uppercase px-4 py-2 sm:px-5 sm:py-2.5 rounded-full flex items-center gap-2 shadow-[0_0_20px_rgba(255,77,28,0.6)] border border-white/30 transition-all active:scale-95"
+                  className="cursor-pointer bg-white text-zinc-950 hover:bg-zinc-200 font-sans text-[12px] font-semibold tracking-wide uppercase px-4 py-2 rounded-full flex items-center gap-1.5 shadow-md transition-all active:scale-95"
                   aria-label="Close and return to website"
                 >
-                  <X className="w-4 h-4 stroke-[3]" />
-                  <span>CLOSE</span>
+                  <X className="w-3.5 h-3.5" />
+                  <span>Close</span>
                 </button>
               </div>
             </div>
 
-            {/* Main Image Display Area with navigation */}
+            {/* Main Image Stage */}
             <div
               className="relative mx-auto max-w-[1200px] w-full flex-1 flex items-center justify-center py-4"
               onClick={(e) => {
@@ -393,48 +388,38 @@ export default function Tours() {
               <button
                 type="button"
                 onClick={prevImage}
-                className="absolute left-2 sm:left-4 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/80 hover:bg-[#FF4D1C] text-white border border-white/30 grid place-items-center backdrop-blur-md transition-all cursor-pointer shadow-lg active:scale-90"
+                className="absolute left-2 sm:left-4 z-20 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-zinc-900/80 hover:bg-white hover:text-black text-white border border-white/20 grid place-items-center backdrop-blur-md transition-all cursor-pointer shadow-lg active:scale-95"
                 aria-label="Previous photo"
               >
-                <ChevronLeft className="w-7 h-7 -translate-x-[1px]" />
+                <ChevronLeft className="w-6 h-6" />
               </button>
 
-              {/* Photo Box with its own Top-Right X badge */}
+              {/* Center Photo Box */}
               <div
-                className="relative max-h-[62vh] sm:max-h-[68vh] w-full h-full flex items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-black/70 shadow-2xl"
+                className="relative max-h-[64vh] sm:max-h-[70vh] w-full h-full flex items-center justify-center overflow-hidden rounded-2xl bg-black/40"
                 onClick={(e) => e.stopPropagation()}
               >
                 <img
                   src={TOURS[activeTourIndex].gallery[activeImageIndex].url}
                   alt={TOURS[activeTourIndex].gallery[activeImageIndex].title}
-                  className="max-h-[62vh] sm:max-h-[68vh] max-w-full object-contain rounded-xl select-none"
+                  className="max-h-[64vh] sm:max-h-[70vh] max-w-full object-contain rounded-xl select-none"
                 />
-
-                {/* Additional floating X button inside photo container */}
-                <button
-                  type="button"
-                  onClick={closeLightbox}
-                  className="absolute top-3 right-3 z-30 w-9 h-9 rounded-full bg-black/80 hover:bg-[#FF4D1C] text-white border border-white/30 grid place-items-center transition-colors cursor-pointer"
-                  title="Close popup"
-                >
-                  <X className="w-4 h-4 stroke-[2.5]" />
-                </button>
               </div>
 
               {/* Next Button */}
               <button
                 type="button"
                 onClick={nextImage}
-                className="absolute right-2 sm:right-4 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/80 hover:bg-[#FF4D1C] text-white border border-white/30 grid place-items-center backdrop-blur-md transition-all cursor-pointer shadow-lg active:scale-90"
+                className="absolute right-2 sm:right-4 z-20 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-zinc-900/80 hover:bg-white hover:text-black text-white border border-white/20 grid place-items-center backdrop-blur-md transition-all cursor-pointer shadow-lg active:scale-95"
                 aria-label="Next photo"
               >
-                <ChevronRight className="w-7 h-7 translate-x-[1px]" />
+                <ChevronRight className="w-6 h-6" />
               </button>
             </div>
 
-            {/* Bottom Thumbnails Strip */}
+            {/* Bottom Thumbnails */}
             <div
-              className="mx-auto max-w-[800px] w-full pt-3 sm:pt-4 border-t border-white/15 flex items-center justify-center gap-2 sm:gap-3 overflow-x-auto"
+              className="mx-auto max-w-[800px] w-full pt-3 border-t border-white/15 flex items-center justify-center gap-2 sm:gap-3 overflow-x-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {TOURS[activeTourIndex].gallery.map((thumb, idx) => (
@@ -442,10 +427,10 @@ export default function Tours() {
                   key={idx}
                   type="button"
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative w-12 h-12 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${
+                  className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
                     activeImageIndex === idx
-                      ? "border-[#FF4D1C] scale-105 shadow-[0_0_15px_rgba(255,77,28,0.7)]"
-                      : "border-white/20 opacity-50 hover:opacity-100"
+                      ? "border-white scale-105 shadow-md"
+                      : "border-white/20 opacity-40 hover:opacity-80"
                   }`}
                   title={thumb.title}
                 >
@@ -463,3 +448,4 @@ export default function Tours() {
     </section>
   );
 }
+

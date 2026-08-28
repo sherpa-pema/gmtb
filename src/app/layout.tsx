@@ -1,27 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-
-const bebasNeue = Bebas_Neue({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["300", "400", "500", "600"],
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-label",
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "GNARLY MTB Nepal • Signature Himalayan Expeditions & Enduro",
@@ -51,13 +29,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${bebasNeue.variable} ${inter.variable} ${spaceGrotesk.variable}`}
-    >
-      <body className="min-h-screen bg-[#FAF9F6] text-[#111111] selection:bg-[#FF4D1C] selection:text-white antialiased overflow-x-hidden">
+    <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-screen bg-[#FCFCFC] text-[#09090B] selection:bg-[#FF4D1C] selection:text-white font-sans antialiased overflow-x-hidden">
         {children}
       </body>
     </html>
   );
 }
+
+

@@ -32,37 +32,42 @@ const VALUE_PROPS: ValueProp[] = [
 
 export default function WhyUs() {
   return (
-    <section className="mx-auto max-w-[1360px] px-6 lg:px-8 py-16 lg:py-24">
-      <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
-        <h2 className="font-display text-[48px] lg:text-[80px] leading-[0.9] tracking-[-0.01em]">
-          WHY RIDE
-          <br />
-          WITH US
-        </h2>
-        <p className="font-body text-[14px] leading-6 opacity-60 max-w-[360px] pb-2">
+    <section className="mx-auto max-w-[1240px] px-6 lg:px-8 py-16 sm:py-24 border-t border-zinc-200/70">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div>
+          <div className="font-mono text-[11px] tracking-[0.2em] uppercase text-zinc-400 font-medium mb-3">
+            Rider-Owned • Est. 2009
+          </div>
+          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-zinc-950 font-normal tracking-tight">
+            Why Ride <span className="italic text-zinc-400">With Us</span>
+          </h2>
+        </div>
+        <p className="font-sans text-[14px] leading-relaxed text-zinc-500 max-w-[380px]">
           We are not an agency. We are local riders who grew up on these trails.
           GNARLY PVT. LTD. is a rider-owned expedition house.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5">
         {VALUE_PROPS.map((item, index) => {
           const IconComponent = item.icon;
           return (
             <div
               key={index}
-              className="group relative bg-white border border-black/[0.07] rounded-[20px] p-6 lg:p-7 hover:-translate-y-1 hover:shadow-[0_20px_40px_-16px_rgba(0,0,0,0.15)] transition-all duration-300"
+              className="group relative bg-white border border-zinc-200/80 rounded-2xl p-6 hover:border-zinc-300 hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-300 flex flex-col justify-between"
             >
-              <div className="w-10 h-10 rounded-full bg-[#111] text-white grid place-items-center mb-5 group-hover:bg-[#FF4D1C] transition-colors">
-                <IconComponent className="w-4 h-4" />
+              <div>
+                <div className="w-9 h-9 rounded-full bg-zinc-100 border border-zinc-200/70 text-zinc-800 grid place-items-center mb-5 group-hover:bg-zinc-950 group-hover:text-white group-hover:border-zinc-950 transition-colors">
+                  <IconComponent className="w-4 h-4" />
+                </div>
+                <h3 className="font-sans font-semibold text-[15px] text-zinc-950 tracking-tight">
+                  {item.title}
+                </h3>
+                <p className="font-sans text-[13px] leading-relaxed text-zinc-500 mt-2">
+                  {item.desc}
+                </p>
               </div>
-              <h3 className="font-display text-[22px] tracking-wide leading-none mb-2">
-                {item.title.toUpperCase()}
-              </h3>
-              <p className="font-body text-[13px] leading-[1.6] opacity-60">
-                {item.desc}
-              </p>
-              <div className="mt-6 font-label text-[10px] tracking-widest uppercase opacity-20">
+              <div className="mt-6 pt-4 border-t border-zinc-100 font-mono text-[10px] tracking-widest uppercase text-zinc-400">
                 0{index + 1} / 05
               </div>
             </div>
@@ -72,3 +77,4 @@ export default function WhyUs() {
     </section>
   );
 }
+

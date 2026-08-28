@@ -9,12 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-display)", "Bebas Neue", "sans-serif"],
-        body: ["var(--font-body)", "Inter", "sans-serif"],
-        label: ["var(--font-label)", "Space Grotesk", "sans-serif"],
+        serif: ["'Instrument Serif'", "Georgia", "serif"],
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["'JetBrains Mono'", "ui-monospace", "monospace"],
+        display: ["'Instrument Serif'", "Georgia", "serif"],
+        body: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        label: ["'JetBrains Mono'", "ui-monospace", "monospace"],
       },
     },
   },
   plugins: [],
 };
 export default config;
+
+
