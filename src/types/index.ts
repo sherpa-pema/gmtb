@@ -11,6 +11,11 @@ export interface ValueProp {
   desc: string;
 }
 
+export interface TourImage {
+  url: string;
+  title: string;
+}
+
 export interface Tour {
   name: string;
   sub: string;
@@ -18,6 +23,7 @@ export interface Tour {
   accent: string;
   meta: string;
   bullets: string[];
+  gallery: TourImage[];
 }
 
 export interface ThinAirStat {
