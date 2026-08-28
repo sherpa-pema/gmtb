@@ -32,7 +32,7 @@ const VALUE_PROPS: ValueProp[] = [
 
 export default function WhyUs() {
   return (
-    <section className="mx-auto max-w-[1360px] px-6 lg:px-8 pb-20 lg:pb-28">
+    <section className="mx-auto max-w-[1360px] px-6 lg:px-8 py-16 lg:py-24">
       <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
         <h2 className="font-display text-[48px] lg:text-[80px] leading-[0.9] tracking-[-0.01em]">
           WHY RIDE

@@ -16,10 +16,10 @@ export default function Home() {
       <Navbar />
       <Hero />
       <TrustBanner />
-      <WhyUs />
       <Tours />
       <ThinAir />
       <Enduro />
+      <WhyUs />
       <Team />
       <Skills />
       <Contact />
