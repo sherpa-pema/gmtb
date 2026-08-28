@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { ArrowUpRight, X, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { Tour } from "@/types";
 
@@ -156,8 +157,13 @@ const TOURS: Tour[] = [
 ];
 
 export default function Tours() {
+  const [mounted, setMounted] = useState(false);
   const [activeTourIndex, setActiveTourIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -330,105 +336,130 @@ export default function Tours() {
         </div>
       </div>
 
-      {/* Lightbox Modal Popup */}
-      {activeTourIndex !== null && (
-        <div
-          className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-lg flex flex-col justify-between p-4 sm:p-6 lg:p-8 select-none"
-          onClick={closeLightbox}
-        >
-          {/* Prominent Floating Close (X) Button in Top Right */}
-          <button
-            type="button"
+      {/* Lightbox Modal Portal */}
+      {mounted &&
+        activeTourIndex !== null &&
+        createPortal(
+          <div
+            id="lightbox-backdrop"
+            className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-xl flex flex-col justify-between p-4 sm:p-6 lg:p-8 select-none"
             onClick={(e) => {
-              e.stopPropagation();
-              closeLightbox();
+              if (e.target === e.currentTarget || (e.target as HTMLElement).id === "lightbox-backdrop") {
+                closeLightbox();
+              }
             }}
-            className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[350] px-4 py-2.5 rounded-full bg-[#FF4D1C] text-white hover:bg-white hover:text-black font-label text-[11px] tracking-widest uppercase flex items-center gap-2 shadow-2xl transition-all cursor-pointer border border-white/20 active:scale-95"
-            aria-label="Close and return to website"
           >
-            <X className="w-4 h-4" />
-            <span className="font-medium">Close (ESC)</span>
-          </button>
-
-          {/* Top Info Bar */}
-          <div
-            className="mx-auto max-w-[1200px] w-full flex items-center justify-between gap-4 pb-4 border-b border-white/10 pr-32 sm:pr-40"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div>
-              <div className="font-label text-[10px] tracking-[0.24em] uppercase text-[#FF4D1C]">
-                {TOURS[activeTourIndex].sub} • {TOURS[activeTourIndex].name}
+            {/* Top Fixed Control Bar */}
+            <div
+              className="mx-auto max-w-[1200px] w-full flex items-center justify-between gap-4 pb-4 border-b border-white/15"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div>
+                <div className="font-label text-[10px] sm:text-[11px] tracking-[0.24em] uppercase text-[#FF4D1C] font-semibold">
+                  {TOURS[activeTourIndex].sub} • {TOURS[activeTourIndex].name}
+                </div>
+                <h4 className="font-display text-[20px] sm:text-[28px] text-white leading-none mt-1">
+                  {TOURS[activeTourIndex].gallery[activeImageIndex].title}
+                </h4>
               </div>
-              <h4 className="font-display text-[22px] sm:text-[28px] text-white leading-none mt-1">
-                {TOURS[activeTourIndex].gallery[activeImageIndex].title}
-              </h4>
+
+              {/* Action Controls & Close Button */}
+              <div className="flex items-center gap-3 sm:gap-4">
+                <span className="font-label text-[11px] sm:text-[12px] tracking-widest text-white/60 font-medium">
+                  0{activeImageIndex + 1} / 0{TOURS[activeTourIndex].gallery.length}
+                </span>
+
+                {/* Highly Visible Close Button */}
+                <button
+                  type="button"
+                  onClick={closeLightbox}
+                  className="cursor-pointer bg-[#FF4D1C] hover:bg-white text-white hover:text-black font-label text-[11px] sm:text-[12px] font-bold tracking-widest uppercase px-4 py-2 sm:px-5 sm:py-2.5 rounded-full flex items-center gap-2 shadow-[0_0_20px_rgba(255,77,28,0.6)] border border-white/30 transition-all active:scale-95"
+                  aria-label="Close and return to website"
+                >
+                  <X className="w-4 h-4 stroke-[3]" />
+                  <span>CLOSE</span>
+                </button>
+              </div>
             </div>
 
-            <div className="font-label text-[11px] tracking-widest text-white/50">
-              0{activeImageIndex + 1} / 0
-              {TOURS[activeTourIndex].gallery.length}
-            </div>
-          </div>
-
-          {/* Main Image Display Area */}
-          <div
-            className="relative mx-auto max-w-[1200px] w-full flex-1 flex items-center justify-center py-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={prevImage}
-              className="absolute left-2 sm:left-4 z-10 w-12 h-12 rounded-full bg-black/70 hover:bg-[#FF4D1C] text-white border border-white/20 grid place-items-center backdrop-blur transition-colors cursor-pointer"
-              aria-label="Previous image"
+            {/* Main Image Display Area with navigation */}
+            <div
+              className="relative mx-auto max-w-[1200px] w-full flex-1 flex items-center justify-center py-4"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) closeLightbox();
+              }}
             >
-              <ChevronLeft className="w-6 h-6 -translate-x-[1px]" />
-            </button>
-
-            <div className="relative max-h-[65vh] w-full h-full flex items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/60 shadow-2xl">
-              <img
-                src={TOURS[activeTourIndex].gallery[activeImageIndex].url}
-                alt={TOURS[activeTourIndex].gallery[activeImageIndex].title}
-                className="max-h-[65vh] max-w-full object-contain rounded-xl select-none"
-              />
-            </div>
-
-            <button
-              type="button"
-              onClick={nextImage}
-              className="absolute right-2 sm:right-4 z-10 w-12 h-12 rounded-full bg-black/70 hover:bg-[#FF4D1C] text-white border border-white/20 grid place-items-center backdrop-blur transition-colors cursor-pointer"
-              aria-label="Next image"
-            >
-              <ChevronRight className="w-6 h-6 translate-x-[1px]" />
-            </button>
-          </div>
-
-          {/* Bottom Thumbnails Strip */}
-          <div
-            className="mx-auto max-w-[800px] w-full pt-4 border-t border-white/10 flex items-center justify-center gap-2 sm:gap-3 overflow-x-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {TOURS[activeTourIndex].gallery.map((thumb, idx) => (
+              {/* Prev Button */}
               <button
-                key={idx}
                 type="button"
-                onClick={() => setActiveImageIndex(idx)}
-                className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${
-                  activeImageIndex === idx
-                    ? "border-[#FF4D1C] scale-105 shadow-[0_0_14px_rgba(255,77,28,0.6)]"
-                    : "border-white/20 opacity-50 hover:opacity-100"
-                }`}
-                title={thumb.title}
+                onClick={prevImage}
+                className="absolute left-2 sm:left-4 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/80 hover:bg-[#FF4D1C] text-white border border-white/30 grid place-items-center backdrop-blur-md transition-all cursor-pointer shadow-lg active:scale-90"
+                aria-label="Previous photo"
+              >
+                <ChevronLeft className="w-7 h-7 -translate-x-[1px]" />
+              </button>
+
+              {/* Photo Box with its own Top-Right X badge */}
+              <div
+                className="relative max-h-[62vh] sm:max-h-[68vh] w-full h-full flex items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-black/70 shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
               >
                 <img
-                  src={thumb.url}
-                  alt={thumb.title}
-                  className="w-full h-full object-cover"
+                  src={TOURS[activeTourIndex].gallery[activeImageIndex].url}
+                  alt={TOURS[activeTourIndex].gallery[activeImageIndex].title}
+                  className="max-h-[62vh] sm:max-h-[68vh] max-w-full object-contain rounded-xl select-none"
                 />
+
+                {/* Additional floating X button inside photo container */}
+                <button
+                  type="button"
+                  onClick={closeLightbox}
+                  className="absolute top-3 right-3 z-30 w-9 h-9 rounded-full bg-black/80 hover:bg-[#FF4D1C] text-white border border-white/30 grid place-items-center transition-colors cursor-pointer"
+                  title="Close popup"
+                >
+                  <X className="w-4 h-4 stroke-[2.5]" />
+                </button>
+              </div>
+
+              {/* Next Button */}
+              <button
+                type="button"
+                onClick={nextImage}
+                className="absolute right-2 sm:right-4 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/80 hover:bg-[#FF4D1C] text-white border border-white/30 grid place-items-center backdrop-blur-md transition-all cursor-pointer shadow-lg active:scale-90"
+                aria-label="Next photo"
+              >
+                <ChevronRight className="w-7 h-7 translate-x-[1px]" />
               </button>
-            ))}
-          </div>
-        </div>
-      )}
+            </div>
+
+            {/* Bottom Thumbnails Strip */}
+            <div
+              className="mx-auto max-w-[800px] w-full pt-3 sm:pt-4 border-t border-white/15 flex items-center justify-center gap-2 sm:gap-3 overflow-x-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {TOURS[activeTourIndex].gallery.map((thumb, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setActiveImageIndex(idx)}
+                  className={`relative w-12 h-12 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${
+                    activeImageIndex === idx
+                      ? "border-[#FF4D1C] scale-105 shadow-[0_0_15px_rgba(255,77,28,0.7)]"
+                      : "border-white/20 opacity-50 hover:opacity-100"
+                  }`}
+                  title={thumb.title}
+                >
+                  <img
+                    src={thumb.url}
+                    alt={thumb.title}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
     </section>
   );
 }
